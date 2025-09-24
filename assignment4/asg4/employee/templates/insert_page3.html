@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    Add details. 
+    <form action="/added/" method="post">
+        {% csrf_token %}
+        <input name="employeeID" type="number">
+        <input name="employeeName" type="text">
+        <input name="employeeSalary" type="number">
+        <input type="submit">
+    </form>
+</body>
+</html>

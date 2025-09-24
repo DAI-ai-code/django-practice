@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Employee Record</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            transition: transform 0.3s ease;
+        }
+        
+        .container:hover {
+            transform: translateY(-5px);
+        }
+        
+        h1 {
+            color: #e74c3c;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #34495e;
+            font-weight: 500;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #f8f9fa;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #e74c3c;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+        }
+        
+        input::placeholder {
+            color: #a0aec0;
+        }
+        
+        .delete-btn {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .delete-btn:hover {
+            background: linear-gradient(to right, #c0392b, #a93226);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .delete-btn:active {
+            transform: translateY(0);
+        }
+        
+        .icon {
+            position: absolute;
+            right: 16px;
+            top: 40px;
+            color: #7f8c8d;
+            font-size: 18px;
+        }
+        
+        .warning-message {
+            background-color: #f9e3e3;
+            color: #c0392b;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+            font-weight: 500;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .success-message {
+            background-color: #e3f9e3;
+            color: #27ae60;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+            font-weight: 500;
+            border-left: 4px solid #2ecc71;
+        }
+        
+        .confirmation {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .confirmation p {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .confirmation-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .confirm-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            cursor: pointer;
+            flex: 1;
+            font-weight: 500;
+        }
+        
+        .cancel-btn {
+            background: #95a5a6;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            cursor: pointer;
+            flex: 1;
+            font-weight: 500;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .confirmation-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Delete Employee Record</h1>
+        <p class="subtitle">Enter the Employee ID to delete their record</p>
+        
+        <div class="confirmation" id="confirmation">
+            <p>Are you sure you want to delete the record for Employee ID: <strong id="confirmId"></strong>?</p>
+            <p>This action cannot be undone.</p>
+            <div class="confirmation-buttons">
+                <button class="confirm-btn" id="confirmDelete">Yes, Delete</button>
+                <button class="cancel-btn" id="cancelDelete">Cancel</button>
+            </div>
+        </div>
+        
+        <form id="deleteForm" action="/admin/" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="employeeID">Employee ID</label>
+                <input type="text" id="employeeID" placeholder="Enter employee ID to delete" required>
+                <div class="icon">🔢</div>
+            </div>
+            
+            <button type="submit" class="delete-btn">Delete Employee Record</button>
+            
+            <div class="warning-message" id="warningMessage">
+                Please enter a valid Employee ID
+            </div>
+            
+            <div class="success-message" id="successMessage">
+                Employee record deleted successfully!
+            </div>
+        </form>
+    </div>
+</body>
+</html>
