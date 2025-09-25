@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    Update details for an employee.
+    <form action="/updated/" method="POST">
+        {%csrf_token%} 
+        Enter ID of employee: 
+        <input type="number" name="employeeID">
+
+        <p>
+            Enter salary: 
+        </p>
+        <input type="number" name="esalary">
+        <input type="submit">
+    </form>
+</body>
+</html>
